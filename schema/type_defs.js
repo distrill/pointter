@@ -11,14 +11,25 @@ module.exports = `
     content: String!
   }
 
+  type Follower {
+    id: String!
+    followerId: String!
+    followingId: String!
+  }
+
   type Query {
     me: User!
-    points: [Point!]!
+    followers: [User!]!
+    following: [User!]!
+    points(following: Boolean): [Point!]!
   }
 
   type Mutation {
     signup (username: String!, email: String!, password: String!): String
     login (email: String!, password: String!): String
     makePoint (content: String!): Point
+    editPoint (id: String! content: String): Point
+    unmakePoint (id: String!): Point
+    follow (userId: String!): Follower
   }
 `;
