@@ -12,11 +12,11 @@
 ``` sql
 CREATE DATABASE ptr_dev;
 CREATE USER ptr_dev WITH ENCRYPTED PASSWORD 'ptr_dev';
-GRANT ALL PRIVILEGES ON DATABASE ptr_dev TO pptr_dev;
+GRANT ALL PRIVILEGES ON DATABASE ptr_dev TO ptr_dev;
 
 CREATE DATABASE ptr_test;
 CREATE USER ptr_test WITH ENCRYPTED PASSWORD 'ptr_test';
-GRANT ALL PRIVILEGES ON DATABASE ptr_test TO pptr_test;
+GRANT ALL PRIVILEGES ON DATABASE ptr_test TO ptr_test;
 ```
 4. install dependencies:
 ``` bash
