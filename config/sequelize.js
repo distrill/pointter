@@ -1,10 +1,10 @@
 module.exports = {
   base: {
-    dialect: 'postgres',
     operatorsAliases: 0,
     logging: false,
   },
   development: {
+    dialect: 'postgres',
     username: 'ptr_dev',
     password: 'ptr_dev',
     database: 'ptr_dev',
