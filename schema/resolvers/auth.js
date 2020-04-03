@@ -1,14 +1,13 @@
 const bcrypt = require('bcrypt');
 const jsonwebtoken = require('jsonwebtoken');
-const { auth: { jwtSecret } } = require('../../config');
-const { User } = require('../../models');
+const { auth: { jwtSecret, saltRounds } } = require('../../config');
+const { user: userModel } = require('../../models');
 
 async function signup(_, { username, email, password }) {
-  const user = await User.create({
+  const user = await userModel.create({
     username,
     email,
-    // FIXME: what does this magic 10 mean?
-    password: await bcrypt.hash(password, 10),
+    password: await bcrypt.hash(password, saltRounds),
   });
 
   return jsonwebtoken.sign(
@@ -19,7 +18,7 @@ async function signup(_, { username, email, password }) {
 }
 
 async function login(_, { email, password }) {
-  const user = await User.findOne({ where: { email } });
+  const user = await userModel.findOne({ where: { email } });
 
   if (!user) {
     throw new Error('no user with that email');

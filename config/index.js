@@ -4,6 +4,6 @@ const auth = require('./auth');
 const env = process.env.NODE_ENV || 'development';
 
 module.exports = {
-  sequelize: sequelize[env],
-  auth: auth[env],
+  sequelize: { ...sequelize.base, ...sequelize[env] },
+  auth: { ...auth.base, ...auth[env] },
 };

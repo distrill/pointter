@@ -1,15 +1,15 @@
 module.exports = (sequelize, DataTypes) => {
-  const Follower = sequelize.define('Follower', {
+  const follower = sequelize.define('follower', {
     followerId: DataTypes.STRING,
     followingId: DataTypes.STRING,
   }, {
     tableName: 'follower',
   });
 
-  Follower.associate = (models) => {
-    Follower.belongsTo(models.User, { foreignKey: 'followerId' });
-    Follower.belongsTo(models.User, { foreignKey: 'followingId' });
+  follower.associate = (models) => {
+    follower.belongsTo(models.user, { foreignKey: 'followerId' });
+    follower.belongsTo(models.user, { foreignKey: 'followingId' });
   };
 
-  return Follower;
+  return follower;
 };

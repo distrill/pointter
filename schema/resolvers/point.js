@@ -1,30 +1,33 @@
-const { Point } = require('../../models');
+const { point: pointModel, user: userModel } = require('../../models');
 
 function points(_, { following }, { user }) {
   if (!user) {
-    throw new Error('you are not authenticated');
+    throw new Error('user is required');
   }
   if (following) {
-    return Point.findAllFollowing(user.id);
+    return pointModel.findAllFollowing(user.id);
   }
-  return Point.findAll({ where: { userId: user.id } });
+  return pointModel.findAll({
+    where: { userId: user.id },
+    include: [{ model: userModel }],
+  });
 }
 
 async function makePoint(_, { content }, { user }) {
   if (!user) {
-    throw new Error('you are not authenticated');
+    throw new Error('user is required');
   }
-  return Point.create({ content, userId: user.id });
+  return pointModel.create({ content, userId: user.id });
 }
 
 async function editPoint(_, { id, content }, { user }) {
   if (!user) {
-    throw new Error('you are not authenticated');
+    throw new Error('user is required');
   }
 
-  const point = await Point.findOne({ where: { id } });
-  if (point.userId !== user.id) {
-    throw new Error('you do not own this resource');
+  const point = await pointModel.findOne({ where: { id } });
+  if (!point || point.userId !== user.id) {
+    throw new Error('user does not own resource');
   }
 
   point.content = content;
@@ -34,12 +37,12 @@ async function editPoint(_, { id, content }, { user }) {
 
 async function unmakePoint(_, { id }, { user }) {
   if (!user) {
-    throw new Error('you are not authenticated');
+    throw new Error('user is required');
   }
 
-  const point = await Point.findOne({ where: { id } });
-  if (point.userId !== user.id) {
-    throw new Error('you do not own this resource');
+  const point = await pointModel.findOne({ where: { id } });
+  if (!point || point.userId !== user.id) {
+    throw new Error('user does not own resource');
   }
 
   await point.destroy();

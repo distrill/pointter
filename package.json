@@ -4,9 +4,15 @@
   "description": "gql 02",
   "main": "server.js",
   "license": "MIT",
+  "scripts": {
+    "start": "node server.js",
+    "pretest": "NODE_ENV=test node_modules/.bin/sequelize db:migrate",
+    "test": "jest --runInBand --verbose"
+  },
   "dependencies": {
     "apollo-server-express": "^2.11.0",
     "bcrypt": "^4.0.1",
+    "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
@@ -24,6 +30,8 @@
     "eslint-plugin-import": "^2.20.1",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.19.0",
-    "eslint-plugin-react-hooks": "^2.5.0 || ^1.7.0"
+    "eslint-plugin-react-hooks": "^2.5.0 || ^1.7.0",
+    "jest": "^25.2.4",
+    "sequelize-cli": "^5.5.1"
   }
 }

@@ -1,7 +1,7 @@
 const { Op } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define('User', {
+  const user = sequelize.define('user', {
     username: DataTypes.STRING,
     email: DataTypes.STRING,
     password: DataTypes.STRING,
@@ -9,26 +9,27 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'user',
   });
 
-  User.associate = (models) => {
-    User.hasMany(models.Follower, { foreignKey: 'followerId' });
-    User.hasMany(models.Follower, { foreignKey: 'followingId' });
+  user.associate = (models) => {
+    user.hasMany(models.follower, { foreignKey: 'followerId' });
+    user.hasMany(models.follower, { foreignKey: 'followingId' });
+    user.hasMany(models.point, { foreignKey: 'userId' });
 
     function findAssociated(filterKey, selectKey) {
       return async (userId) => {
-        const fs = await models.Follower.findAll({ where: { [filterKey]: userId } });
-        const fids = fs.map((f) => f[selectKey]);
-        return User.findAll({
+        const associates = await models.follower.findAll({ where: { [filterKey]: userId } });
+        const associateIds = associates.map((a) => a[selectKey]);
+        return user.findAll({
           where: {
-            id: { [Op.in]: fids },
+            id: { [Op.in]: associateIds },
           },
         });
       };
     }
 
-    User.findFollowers = findAssociated('followingId', 'followerId');
-    User.findFollowing = findAssociated('followerId', 'followingId');
+    user.findFollowers = findAssociated('followingId', 'followerId');
+    user.findFollowing = findAssociated('followerId', 'followingId');
   };
 
 
-  return User;
+  return user;
 };

@@ -9,6 +9,7 @@ module.exports = `
     id: String!
     userId: String!
     content: String!
+    user: User
   }
 
   type Follower {

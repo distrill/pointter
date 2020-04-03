@@ -1,11 +1,10 @@
-// const { Op } = require('sequelize');
-const { User, Follower } = require('../../models');
+const { user: userModel, follower: followerModel } = require('../../models');
 
 async function me(_, args, { user }) {
   if (!user) {
-    throw new Error('you are not authenticated');
+    throw new Error('user is required');
   }
-  const userRecord = await User.findByPk(user.id);
+  const userRecord = await userModel.findByPk(user.id);
   if (!userRecord) {
     throw new Error('user does not exist');
   }
@@ -14,27 +13,27 @@ async function me(_, args, { user }) {
 
 async function follow(_, { userId }, { user }) {
   if (!user) {
-    throw new Error('you are not authenticated');
+    throw new Error('user is required');
   }
-  if (!await User.findByPk(userId)) {
+  if (!await userModel.findByPk(userId)) {
     throw new Error(`requested user does not exist: ${userId}`);
   }
 
-  return Follower.create({ followerId: user.id, followingId: userId });
+  return followerModel.create({ followerId: user.id, followingId: userId });
 }
 
 async function followers(_, args, { user }) {
   if (!user) {
-    throw new Error('you are not authenticated');
+    throw new Error('user is required');
   }
-  return User.findFollowers(user.id);
+  return userModel.findFollowers(user.id);
 }
 
 async function following(_, args, { user }) {
   if (!user) {
-    throw new Error('you are not authenticated');
+    throw new Error('user is required');
   }
-  return User.findFollowing(user.id);
+  return userModel.findFollowing(user.id);
 }
 
 module.exports = {
