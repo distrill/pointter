@@ -103,7 +103,7 @@ type Mutation {
   # update the content of a given point you made, add some nuance
   editPoint (id: String! content: String): Point
   
-  # unmake point. perhapd you didn't mean or you learned something new and want to take it back
+  # unmake point. perhaps you didn't mean it or you learned something new and want to take it back
   unmakePoint (id: String!): Point
   
   # follow a friend or another user
